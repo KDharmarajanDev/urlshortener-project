@@ -26,7 +26,15 @@ app.get('/api/hello', function(req, res) {
 });
 
 app.post('/api/shorturl/new', function(req, res){
-
+  dns.lookup(req.body.url, function(err){
+    if (err == null){
+      last_id += 1;
+      urls[last_id] = req.body.url;
+      res.json({original_url: req.body.url, short_url: last_id});
+    } else {
+      res.json({error: 'invalid url'});
+    }
+  });
 });
 
 app.listen(port, function() {
